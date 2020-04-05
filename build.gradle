@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion rootProject.minsdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion 19
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -31,6 +31,17 @@ android {
 }
 
 ext {
+    //compile version
+    compileSdkVersion = 28
+    //build tools version
+    buildToolsVersion = '28.0.0'
+    //min sdk version
+    minsdkVersion = 19
+    //target Version
+    targetSdkVersion = 28
+    //support lib version
+    supportVersion = '28.0.0'
+
     rxjavaVersion = '2.2.7'
     rxandroidVersion = '2.1.1'
     okhttpVersion = '3.12.0'
@@ -42,7 +53,7 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
 
     /* Rxjava Start */
     api "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
