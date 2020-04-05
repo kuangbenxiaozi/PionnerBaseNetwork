@@ -1,0 +1,76 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minsdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+    useLibrary 'org.apache.http.legacy'
+}
+
+ext {
+    rxjavaVersion = '2.2.7'
+    rxandroidVersion = '2.1.1'
+    okhttpVersion = '3.12.0'
+    retrofitVersion = '2.5.0'
+
+    netJarName = 'PionnerBaseNetwork.jar'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
+
+    /* Rxjava Start */
+    api "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+    api "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
+
+    //api "io.reactivex:rxkotlin:1.0.0"
+    /* Rxjava End */
+
+    /* OkHttp Start */
+    api "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    /* OkHttp End */
+
+    /* Retrofit Start */
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    api "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    /* Retrofit End */
+
+//    api 'com.google.dagger:dagger:2.21'
+//    annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+}
+
+task makeJar(type: Jar, dependsOn: ['build']) {
+    //导出的jar文件名称
+    archiveName = "$netJarName"
+    //从哪个目录打包jar
+    from('build/intermediates/packaged-classes/release/classes.jar')
+    //from('build/intermediates/packaged-classes/debug/classes.jar')
+    //导出的jar文件的存放目录（未指定则默认存放在build/libs下）
+    destinationDir = file('build/libs')
+}
