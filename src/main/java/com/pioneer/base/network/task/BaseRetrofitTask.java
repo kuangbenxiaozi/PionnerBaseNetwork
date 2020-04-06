@@ -3,6 +3,7 @@ package com.pioneer.base.network.task;
 import android.content.Context;
 import android.util.ArrayMap;
 
+import com.pioneer.base.network.NetConstant;
 import com.pioneer.base.network.listener.CommonSubscriber;
 import com.pioneer.base.network.model.BaseModel;
 import com.pioneer.base.network.retrofitmanager.BaseRetrofitManager;
@@ -32,7 +33,21 @@ public abstract class BaseRetrofitTask<S,M extends BaseModel> extends BaseTask<M
         }
     }
 
-    protected abstract String getHost();
+    /**
+     * host必须以"/"结束
+     * @return
+     */
+    protected String getHost() {
+        return NetConstant.BASE_HOST;
+    }
+
+    /**
+     * Path 前后都不能有"/"
+     * @return
+     */
+    protected String getPath() {
+        return "";
+    }
 
     private S createObservable() {
         Type t = getClass().getGenericSuperclass();

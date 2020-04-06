@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 19
@@ -47,7 +48,9 @@ ext {
     okhttpVersion = '3.12.0'
     retrofitVersion = '2.5.0'
 
-    netJarName = 'PionnerBaseNetwork.jar'
+    netName = 'PionnerBaseNetwork-release'
+    netJarName = 'PionnerBaseNetwork_v' + versionName + ".jar"
+    netAarName = 'PionnerBaseNetwork_v' + versionName + ".aar"
 }
 
 dependencies {
@@ -76,7 +79,11 @@ dependencies {
 //    annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
 }
 
-task makeJar(type: Jar, dependsOn: ['build']) {
+task makeNetJar(type: Jar) {
+    dependsOn build
+    dependsOn clean
+    build.mustRunAfter clean
+
     //导出的jar文件名称
     archiveName = "$netJarName"
     //从哪个目录打包jar
@@ -84,4 +91,16 @@ task makeJar(type: Jar, dependsOn: ['build']) {
     //from('build/intermediates/packaged-classes/debug/classes.jar')
     //导出的jar文件的存放目录（未指定则默认存放在build/libs下）
     destinationDir = file('build/libs')
+}
+
+task makeNetAar(type: Copy) {
+    dependsOn clean
+    dependsOn build
+    build.mustRunAfter clean
+
+    from 'build/outputs/aar/' + "$netName" + '.aar'
+    into 'build/libs'
+    rename {
+        String fileName -> "$netAarName"
+    }
 }
